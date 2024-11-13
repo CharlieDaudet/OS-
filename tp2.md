@@ -9,9 +9,9 @@ blaireaux-furtif@vbox:~$ pwd
 
 🌞 **Vérifier les permissions du répertoire personnel de votre utilisateurs**
 
-blaireaux-furtif@vbox:~$ ls -l /home/
-total 4
-drwxr-xr-x 15 blaireaux-furtif blaireaux-furtif 4096 Nov 12 08:07 blaireaux-furtif
+blaireaux-furtif@vbox:~$ ls -l /home/  
+total 4  
+drwxr-xr-x 15 blaireaux-furtif blaireaux-furtif 4096 Nov 12 08:07 blaireaux-furtif  
 
 🌞 **Trouver le chemin du fichier de configuration du serveur SSH**
 
@@ -26,15 +26,15 @@ root@vbox:~# find / -name sshd_config
 🌞 **Créer un nouvel utilisateur**
 
 blaireaux-furtif@vbox:~$ su - root
-Password:
-root@vbox:~# useradd -m marmotte -d /home/papier_alu
-useradd: user 'marmotte' already exists
-root@vbox:~# userdel 'marmotte'
-root@vbox:~# useradd -m marmotte -d /home/papier_alu
-root@vbox:~# passwd
-New password:
-Retype new password:
-passwd: password updated successfully
+Password:  
+root@vbox:~# useradd -m marmotte -d /home/papier_alu  
+useradd: user 'marmotte' already exists  
+root@vbox:~# userdel 'marmotte'  
+root@vbox:~# useradd -m marmotte -d /home/papier_alu  
+root@vbox:~# passwd  
+New password:  
+Retype new password:  
+passwd: password updated successfully  
 
 ## B. Infos enregistrées par le système:
 
@@ -56,12 +56,12 @@ cat: /home/papier_alu/: Is a directory
 
 🌞 **Tapez une commande pour vous déconnecter : fermer votre session utilisateur**
 
-root@vbox:~# exit
+root@vbox:~# exit  
 logout
 
 🌞 **Assurez-vous que vous pouvez vous connecter en tant que l'utilisateur `marmotte`**
 
-blaireaux-furtif@vbox:~$ su - marmotte
+blaireaux-furtif@vbox:~$ su - marmotte  
 Password:
 $
 $ ls
@@ -71,92 +71,92 @@ $ ls
 
 🌞 **Lancer un processus `sleep`**
 
-root@vbox:~# sleep 1000
-root@vbox:~# ps
-    PID TTY          TIME CMD
-   1115 pts/1    00:00:00 su
-   1116 pts/1    00:00:00 bash
-   1119 pts/1    00:00:00 ps
+root@vbox:~# sleep 1000  
+root@vbox:~# ps  
+    PID TTY          TIME CMD  
+   1115 pts/1    00:00:00 su  
+   1116 pts/1    00:00:00 bash  
+   1119 pts/1    00:00:00 ps  
 root@vbox:~#
 
 🌞 **Terminez le processus `sleep` depuis le deuxième terminal**
 
-root@vbox:~# ps aux | grep sleep
-root        1070  0.0  0.0   5364   564 pts/0    S+   16:14   0:00 sleep 1000
-root        1129  0.0  0.0   6240   712 pts/1    S+   16:27   0:00 grep sleep
-root@vbox:~# kill 1070
-root@vbox:~# sleep 1000
+root@vbox:~# ps aux | grep sleep  
+root        1070  0.0  0.0   5364   564 pts/0    S+   16:14   0:00 sleep 1000  
+root        1129  0.0  0.0   6240   712 pts/1    S+   16:27   0:00 grep sleep  
+root@vbox:~# kill 1070  
+root@vbox:~# sleep 1000   
 Terminated
 ## B. Tâche de fond
 
 🌞 **Lancer un nouveau processus `sleep`, mais en tâche de fond**
 
-root@vbox:~# sleep 1000 &
+root@vbox:~# sleep 1000 &  
 [1] 1130
 
 🌞 **Visualisez la commande en tâche de fond**
 
-root@vbox:~# ps -ef | grep sleep
-root        1130    1067  0 16:29 pts/0    00:00:00 sleep 1000
-root        1138    1067  0 16:32 pts/0    00:00:00 grep sleep
+root@vbox:~# ps -ef | grep sleep  
+root        1130    1067  0 16:29 pts/0    00:00:00 sleep 1000   
+root        1138    1067  0 16:32 pts/0    00:00:00 grep sleep  
 
 ## C. Find paths
 
 
 🌞 **Trouver le chemin où est stocké le programme `sleep`**
 
-root@vbox:~# find / -name sleep
-/usr/lib/klibc/bin/sleep
-/usr/bin/sleep
+root@vbox:~# find / -name sleep  
+/usr/lib/klibc/bin/sleep  
+/usr/bin/sleep  
 
 🌞 Tant qu'on est à chercher des chemins : **trouver les chemins vers tous les fichiers qui s'appellent `.bashrc`**
 
-root@vbox:~# find / -name .bashrc
-/root/.bashrc
-/home/blaireaux-furtif/gameshell/gameshell/World/.bashrc
-/home/blaireaux-furtif/gameshell/gameshell.2/World/.bashrc
-/home/blaireaux-furtif/gameshell/gameshell.1/World/.bashrc
-/home/blaireaux-furtif/.bashrc
-/home/papier_alu/.bashrc
-/etc/skel/.bashrc
+root@vbox:~# find / -name .bashrc  
+/root/.bashrc  
+/home/blaireaux-furtif/gameshell/gameshell/World/.bashrc  
+/home/blaireaux-furtif/gameshell/gameshell.2/World/.bashrc  
+/home/blaireaux-furtif/gameshell/gameshell.1/World/.bashrc  
+/home/blaireaux-furtif/.bashrc  
+/home/papier_alu/.bashrc  
+/etc/skel/.bashrc  
 
 ## D. La variable PATH
 
 
 🌞 **Vérifier que**
-root@vbox:~# which ssh
-/usr/bin/ssh
-root@vbox:~# which ping
-/usr/bin/ping
-root@vbox:~# which sleep
-/usr/bin/sleep
+root@vbox:~# which ssh  
+/usr/bin/ssh  
+root@vbox:~# which ping  
+/usr/bin/ping  
+root@vbox:~# which sleep  
+/usr/bin/sleep  
 # 2. Paquets
 
 
 
 🌞 **Installer le paquet `firefox`**
 
-root@vbox:~# apt install firefox
-Reading package lists... Done
-Building dependency tree... Done
-Reading state information... Done
-Package firefox is not available, but is referred to by another package.
+root@vbox:~# apt install firefox  
+Reading package lists... Done  
+Building dependency tree... Done  
+Reading state information... Done  
+Package firefox is not available, but is referred to by another package.  
 This may mean that the package is missing, has been obsoleted, or
-is only available from another source
+is only available from another source  
 
 E: Package 'firefox' has no installation candidate
-root@vbox:~#
+
 
 🌞 **Utiliser une commande pour lancer Firefox**
 
-root@vbox:~# find / -name firefox
-/usr/share/bash-completion/completions/firefox
-/usr/bin/firefox
+root@vbox:~# find / -name firefox  
+/usr/share/bash-completion/completions/firefox  
+/usr/bin/firefox  
 
 🌞 **Mais aussi déterminer...**
 
-root@vbox:~# cd /etc/
-root@vbox:/etc# ls
+root@vbox:~# cd /etc/  
+root@vbox:/etc# ls  
 adduser.conf            dhcp                    ifplugd          mailcap.order   protocols          subgid
 adjtime                 dictionaries-common     init.d           manpath.config  pulse              subgid-
 alsa                    discover.conf.d         initramfs-tools  mime.types      python3            subuid
@@ -190,6 +190,92 @@ debconf.conf            hostname                machine-id       polkit-1       
 debian_version          hosts                   magic            ppp             speech-dispatcher  xattr.conf
 default                 hosts.allow             magic.mime       profile         ssh                xdg
 deluser.conf            hosts.deny              mailcap          profile.d       ssl                xfce4
-root@vbox:/etc# find /etc -name apt
-/etc/logrotate.d/apt
-/etc/apt
+root@vbox:/etc# find /etc -name apt  
+/etc/logrotate.d/apt  
+/etc/apt  
+
+# IV. Poupée russe
+
+
+
+🌞 **Récupérer le fichier `meow`**
+
+blaireaux-furtif@vbox:~/Downloads$ wget https://gitlab.com/it4lik/b1-os/-/raw/main/tp/2/meow
+--2024-11-13 10:18:27--  https://gitlab.com/it4lik/b1-os/-/raw/main/tp/2/meow  
+Resolving gitlab.com (gitlab.com)... 172.65.251.78, 2606:4700:90:0:f22e:fbec:5bed:a9b9
+Connecting to gitlab.com (gitlab.com)|172.65.251.78|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 18016947 (17M) [application/octet-stream]
+Saving to: ‘meow’
+
+meow                          100%[=================================================>]  17.18M  14.0MB/s    in 1.2s
+
+2024-11-13 10:18:29 (14.0 MB/s) - ‘meow’ saved [18016947/18016947]
+
+blaireaux-furtif@vbox:~/Downloads$ ls  
+meow
+
+🌞 **Trouver le dossier `dawa/`**
+
+blaireaux-furtif@vbox:~/Downloads$ file meow  
+meow: Zip archive data, at least v2.0 to extract  
+blaireaux-furtif@vbox:~/Downloads$ mv meow meow.zip  
+blaireaux-furtif@vbox:~/Downloads$ ls  
+meow.zip  
+blaireaux-furtif@vbox:~/Downloads$ unzip meow.zip  
+Archive:  meow.zip  
+  inflating: meow   
+ blaireaux-furtif@vbox:~/Downloads$ ls  
+meow.zip   
+blaireaux-furtif@vbox:~/Downloads$ file meow.zip  
+meow.zip: XZ compressed data  
+blaireaux-furtif@vbox:~/Downloads$ mv meow.zip meow.xz  
+blaireaux-furtif@vbox:~/Downloads$ ls  
+meow.xz  
+blaireaux-furtif@vbox:~/Downloads$ xz -d meow.xz  
+blaireaux-furtif@vbox:~/Downloads$ ls  
+meow  
+blaireaux-furtif@vbox:~/Downloads$ file meow  
+meow: bzip2 compressed data, block size = 900k  
+blaireaux-furtif@vbox:~/Downloads$ mv meow meow.bzip2  
+blaireaux-furtif@vbox:~/Downloads$ ls  
+meow.bzip2  
+blaireaux-furtif@vbox:~/Downloads$ bzip2 -d meow.bzip2  
+bzip2: Can't guess original name for meow.bzip2 -- using meow.bzip2.out  
+meow.out: RAR archive data, v5
+blaireaux-furtif@vbox:~/Downloads$ sudo apt install unrar-free
+blaireaux-furtif@vbox:~/Downloads$ unrar meow.out
+
+unrar-free 0.1.3  Copyright (C) 2004  Ben Asselstine, Jeroen Dekkers
+
+
+Extracting from /home/crea/Downloads/meow.out
+
+Extracting  meow                                                      OK        
+All OK
+blaireaux-furtif@vbox:~/Downloads$ file meow
+meow: gzip compressed data, from Unix, original size modulo 2^32 145049600 gzip compressed data, reserved method, has CRC, extra field, has comment, from FAT filesystem (MS-DOS, OS/2, NT), original size modulo 2^32 145049600
+blaireaux-furtif@vbox:~/Downloads$ mv meow.gzip meow.gz
+blaireaux-furtif@vbox:~/Downloads$ gzip -d meow.gz
+blaireaux-furtif@vbox:~/Downloads$ file meow
+meow: POSIX tar archive (GNU)
+blaireaux-furtif@vbox:~/Downloads$ mv meow meow.tar
+blaireaux-furtif@vbox:~/Downloads$ tar -xvf meow.tar 
+
+
+
+🌞 **Dans le dossier `dawa/`, déterminer le chemin vers**
+
+blaireaux-furtif@vbox:~/Downloads$ find dawa/ -type f -size 15M
+dawa/folder31/19/file39  
+blaireaux-furtif@vbox:~/Downloads$ find dawa/ -type f -name "cookie"  
+dawa/folder14/25/cookie  
+blaireaux-furtif@vbox:~/Downloads$ find dawa/ -type f -name ".*"
+dawa/folder32/14/.hidden_file    
+blaireaux-furtif@vbox:~/Downloads$ find dawa/ -type f -path "*/*/*/*/*/*"  
+dawa/folder37/45/23/43/54/file43    
+blaireaux-furtif@vbox:~/Downloads$ find dawa/ -type f -newermt 2014-01-01 ! -newermt 2015-01-01  
+dawa/folder36/40/file43
+blaireaux-furtif@vbox:~/Downloads$ find dawa/ -type f | xargs grep -L '[^7]'  
+dawa/folder43/38/file41
+
