@@ -25,16 +25,16 @@ root@vbox:~# find / -name sshd_config
 
 🌞 **Créer un nouvel utilisateur**
 
+```bash
 blaireaux-furtif@vbox:~$ su - root
 Password:  
-root@vbox:~# useradd -m marmotte -d /home/papier_alu  
-useradd: user 'marmotte' already exists  
-root@vbox:~# userdel 'marmotte'  
-root@vbox:~# useradd -m marmotte -d /home/papier_alu  
-root@vbox:~# passwd  
+root@vbox:~# useradd -m marmotte -d /home/papier_alu   
+root@vbox:~# passwd marmotte 
 New password:  
 Retype new password:  
 passwd: password updated successfully  
+```
+
 
 ## B. Infos enregistrées par le système:
 
@@ -42,13 +42,14 @@ passwd: password updated successfully
 
 🌞 **Prouver que cet utilisateur a été créé**
 
-root@vbox:~# cat /home/papier_alu | grep marmotte
-cat: /home/papier_alu: Is a directory
+blaireaux-furtif@vbox:~$ cat /etc/passwd | grep marmotte
+marmotte:x:1001:1001::/home/papier_alu:/bin/sh
 
-🌞 **Déterminer le *hash* du password de l'utilisateur `marmotte`**
-
-root@vbox:~# cat /home/papier_alu/ | grep hash
-cat: /home/papier_alu/: Is a directory
+🌞 **Déterminer le *hash* du password de l'utilisateur `marmotte`**  
+```bash
+blaireaux-furtif@vbox:~$  sudo grep marmotte /etc/shadow | cut -d: -f1,2,3,4,5,6  
+marmotte:$y$j9T$SspDOY4DM5DEudC8Z.rQa1$vKzvjTfYgBFyqjx9ZKm2KpQX1qXBTf1stdc9vVjWg0C:20039:0:99999:7  
+```
 
 
 
