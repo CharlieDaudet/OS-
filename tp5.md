@@ -206,9 +206,13 @@ hello4: ELF 32-bit LSB pie executable, ARM, EABI5 version 1 (SYSV), dynamically 
 
 🌞 **[Désassemblez](../../cours/memo/glossary.md#désassembler) `hello3` et `hello4` à l'aide d'`objdump`**
 
-- vous devriez constater que malgré le même *programme* C d'entrée, le contenu des deux *programmes* une fois compilés est bien différent
+```bash 
+objdump -M intel -j .text -d hello3
+objdump -M intel -j .text -d hello4
+  ```
 
 🌞 **Essayez d'exécuter le *programme* `hello4`**
-
-- sproutch !
-- should NOT work
+```bash
+blaireaux-furtif@vbox:~/work$ ./hello4
+-bash: ./hello4: cannot execute binary file: Exec format error
+```
