@@ -4,18 +4,18 @@
 
 
 🌞 **Afficher la ligne du fichier qui concerne votre utilisateur**
-
+```bash
 blaireaux-furtif@vbox:~$ cat /etc/passwd | grep blaireaux-furtif
 blaireaux-furtif:x:1000:1000:Blaireaux-Furtif,,,:/home/blaireaux-furtif:/bin/bash
-
+```
 🌞 **Afficher la ligne du fichier qui concerne votre utilisateur ET celle de `root` en même temps**
-
+```bash
 blaireaux-furtif@vbox:~$ cat /etc/passwd | grep -e blaireaux-furtif -e root  
 root:x:0:0:root:/root:/bin/bash  
 blaireaux-furtif:x:1000:1000:Blaireaux-Furtif,,,:/home/blaireaux-furtif:/bin/bash  
-
+```
 🌞 **Afficher la liste des groupes d'utilisateurs de la *machine***
-
+```bash
 blaireaux-furtif@vbox:~$ cat /etc/group  
 root:x:0:  
 daemon:x:1:  
@@ -83,50 +83,57 @@ blaireaux-furtif:x:1000:
 systemd-coredump:x:999:  
 marmotte:x:1001:  
 
-
+```
 
 🌞 **Afficher la ligne du fichier qui concerne votre utilisateur ET celle de `root` en même temps**
-
+```bash
 blaireaux-furtif@vbox:~$ grep -e blaireaux-furtif -e root /etc/passwd | cut -d: -f1,6  
 root:/root  
 blaireaux-furtif:/home/blaireaux-furtif  
-
+```
 ## 2. Hash des passwords
 
 
 🌞 **Afficher la ligne qui contient le hash du mot de passe de votre utilisateur**
-
+```bash
 blaireaux-furtif@vbox:~$ sudo grep blaireaux-furtif /etc/shadow | cut -d: -f1,2,3,4,5,6  
 blaireaux-furtif:$y$j9T$Frx8r7zZmtvkbPmkAcJ4x/$ufIggp9ILMtFLrO1zJ7IERH.sWscwAp5FhO4YiYWEdD:20034:0:99999:7
-
+```
 ## 3. Sudo
 
 
-🌞 **Faites en sorte que votre utilisateur puisse taper** blaireaux-furtif@vbox:~$ sudo usermod -aG sudo blaireaux-furtif  
+🌞 **Faites en sorte que votre utilisateur puisse taper** 
+```bash
+blaireaux-furtif@vbox:~$ sudo usermod -aG sudo blaireaux-furtif  
 blaireaux-furtif@vbox:~$ sudo su blaireaux-furtif
 blaireaux-furtif@vbox:~$ sudo whoami  
 root  
+```
 ### B. Practice
 
 🌞 **Créer un groupe d'utilisateurs**  
+```bash
 blaireaux-furtif@vbox:~$ sudo groupadd stronk_admins
+```
 
 🌞 **Créer un utilisateur**
-
+```bash
 blaireaux-furtif@vbox:~$ sudo useradd -m imbob -d /home/stronk_admins  
 blaireaux-furtif@vbox:~$ sudo passwd imbob  
 New password:  
 Retype new password:  
 passwd: password updated successfully
-
+```
 🌞 **Prouver que l'utilisateur `imbob` est créé**
-
+```bash
 blaireaux-furtif@vbox:~$ cat /etc/passwd | grep imbob  
 imbob:x:1002:1003::/home/stronk_admins:/bin/sh
-
+```
 🌞 **Prouver que l'utilisateur `imbob` a un password défini**
+```bash
 blaireaux-furtif@vbox:~$ sudo grep imbob /etc/shadow | cut -d: -f1,2,3,4,5,6  
 imbob:$y$j9T$WPLFhAkvp88M6EPmZ4Aa4.$.nVeAUwEXIgUOdb2mxUUA3Wb0b8zkWMiqYtUHNoMUS4:20042:0:99999:7
+```
 
 🌞 **Prouver que l'utilisateur `imbob` appartient au groupe `stronk_admins`**
 
