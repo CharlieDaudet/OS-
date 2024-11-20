@@ -137,65 +137,74 @@ imbob:$y$j9T$WPLFhAkvp88M6EPmZ4Aa4.$.nVeAUwEXIgUOdb2mxUUA3Wb0b8zkWMiqYtUHNoMUS4:
 
 🌞 **Prouver que l'utilisateur `imbob` appartient au groupe `stronk_admins`**
 
-- la liste des groupes et de leurs membres c'est dans `/etc/group`
-- affichez une seule ligne
+```bash
+blaireaux-furtif@vbox:~$ sudo cat  /etc/group | grep imbob
+imbob:x:1003:
+```
 
 🌞 **Créer un deuxième utilisateur**
 
-- il devra s'appeler `imnotbobsorry`
-- il devra avoir un mot de passe défini
-- il devra appartenir au groupe `imnotbobsorry` ET `stronk_admins`
+```bash
+blaireaux-furtif@vbox:~$ sudo useradd imnotbobsorry
+blaireaux-furtif@vbox:~$ sudo passwd imnotbobsorry
+New password:
+Retype new password:
+passwd: password updated successfully
+``` 
 
 🌞 **Modifier la configuration de `sudo` pour que**
 
-- les membres du groupes `stronk_admins` ait le droit de taper des commandes `apt` en tant que `root`
-- l'utilisateur `imbob` peut taper n'importe quelle commande en tant que `root`
+
 
 🌞 **Créer le dossier `/home/goodguy`** (avec une commande)
+```bash
+blaireaux-furtif@vbox:~$ sudo mkdir goodguy
 
+```
 🌞 **Changer le répertoire personnel de `imbob`**
+```bash
+blaireaux-furtif@vbox:~$ sudo usermod -d /home/goodguy imbob
+blaireaux-furtif@vbox:~$ cat /etc/passwd | grep imbob
+imbob:x:1002:1003::/home/goodguy:/bin/sh
 
-- avec une commande `usermod`, définissez ce dossier comme le *répertoire personnel* de `imbob`
-- prouvez que le changement est effectif en affichant le contenu du fichier `passwd`
-
-> "*Répertoire personnel*" ça se dit "*home directory*" en anglais, on dit souvent juste "*homedir*" pour faire court. Sous Windows, pour rappel, les *homedirs* des utilisateurs sont stockés par défaut dans `C:/Users/<USER>`, pour Linux c'est donc `/home/<USER>` par défaut.
-
+```
 🌞 **Créer le dossier `/home/badguy`**
-
+```bash
+blaireaux-furtif@vbox:~$ sudo mkdir badguy
+```
 🌞 **Changer le répertoire personnel de `imnotbobsorry`**
-
-- avec une commande `usermod`, définissez ce dossier `/home/badguy` comme le *répertoire personnel* de `imnotbobsorry`
-- prouvez que le changement est effectif en affichant le contenu du fichier `passwd`
-
-> Si t'essaies de te connecter en tant que `imbob` là en tapant la commande `su - imbob` il va sûrement se passer des trucs chelous... En tout cas `imbob` ne pourra pas y créer des fichiers. En effet, tu as sûrement du utiliser les droits de `root` pour créer le dossier, donc actuellement, le *répertoire personnel* de `imbob`, il appartient à `root`... Donc `imbob` n'a aucun droit dans son propre *répertoire personnel*, chelou.
-
+```bash
+blaireaux-furtif@vbox:~$ sudo usermod -d /home/badguy imnotbobsorry
+blaireaux-furtif@vbox:~$ cat /etc/passwd | grep imnotbobsorry
+imnotbobsorry:x:1003:1004::/home/badguy:/bin/sh
+```
 🌞 **Prouver que les permissions du dossier `/home/gooduy` sont incohérentes**
 
-- ça n'appartient pas à l'utilisateur `imbob`
-- ce qui est chelou, l'utilisateur il peut se connecter, mais il peut pas créer quoique ce soit dans son propre *répertoire personnel*, genre dans son propre dossier "Mes Documents"
+
 
 🌞 **Modifier les permissions de `/home/goodguy`**
 
-- le dossier doit appartenir à `imbob`
-- pareil pour tout son contenu
-- avec une commande `chown` (il faudra mettre options et arguments)
-
+```bash
+blaireaux-furtif@vbox:~$ ls -l | grep goodguy
+drwxr-xr-x 2 root             root             4096 Nov 20 11:58 goodguy
+blaireaux-furtif@vbox:~$ sudo chown imbob:imbob goodguy -R
+[sudo] password for blaireaux-furtif:
+blaireaux-furtif@vbox:~$ ls -l | grep goodguy
+drwxr-xr-x 2 imbob            imbob            4096 Nov 20 11:58 goodguy
+blaireaux-furtif@vbox:~$
+```
 🌞 **Modifier les permissions de `/home/badguy`**
 
-- le dossier doit appartenir à `imnotbobsorry`
-- pareil pour tout son contenu
+```bash 
+blaireaux-furtif@vbox:~$ sudo chown imnotbobsorry:imnotbobsorry badguy/ -R
+blaireaux-furtif@vbox:~$ ls -l | grep badguy
+drwxr-xr-x 2 imnotbobsorry    imnotbobsorry    4096 Nov 20 12:20 badguy
+
+```
 
 🌞 **Connectez-vous sur l'utilisateur `imbob`**
 
-- il faut utiliser la commande `su - <USER>` pour ouvrir une nouvelle session en tant qu'un utilisateur
-  - ça doit sortir aucun message d'erreur particulier
-- si tu fais `pwd` tu devrais être dans le dossier `/home/goodguy` tout de suite après connexion (le *répertoire personnel* de `imbob` !)
-- si tu fais `sudo echo meow` ou n'importe quelle autre commande avec `sudo`, ça devrait fonctionner
 
 🌞 **Connectez-vous sur l'utilisateur `imnotbobsorry`**
 
-- il faut utiliser la commande `su - <USER>` pour ouvrir une nouvelle session en tant qu'un utilisateur
-  - ça doit sortir aucun message d'erreur particulier
-- si tu fais `pwd` tu devrais être dans le dossier `/home/badguy` tout de suite après 
-- si tu fais `sudo echo meow` ou n'importe quelle autre commande avec `sudo`, ça ne devrait fonctionner PAS fonctionner
-  - sauf les commandes `sudo apt...`, essaie un `sudo apt update` pour voir ?
+
