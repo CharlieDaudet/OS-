@@ -301,4 +301,169 @@ Connection to 192.168.63.20 closed.
 ```
 
 
+# III. Services
 
+
+## 1. Intro
+
+
+
+
+
+🌞 **S'assurer que le service `ssh` est démarré**
+
+```bash
+blaireaux-furtif@vbox:~$ sudo systemctl status ssh
+[sudo] password for blaireaux-furtif:
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; enabled; preset: disabled)
+     Active: active (running) since Thu 2024-11-21 08:29:32 CET; 25min ago
+ Invocation: c6ec9026ef8f4c82adb27db0f9684213
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 604 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 615 (sshd)
+      Tasks: 1 (limit: 2307)
+     Memory: 7.6M
+        CPU: 196ms
+     CGroup: /system.slice/ssh.service
+             └─615 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+```
+
+🌞 **Isolez la ligne qui indique le nom du programme lancé**
+```bash
+blaireaux-furtif@vbox:~$ sudo ss -lntp | grep ssh
+[sudo] password for blaireaux-furtif:
+LISTEN 0      128          0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=615,fd=7))
+LISTEN 0      128             [::]:22           [::]:*    users:(("sshd",pid=615,fd=8))
+```
+🌞 **Déterminer le port sur lequel écoute le service SSH**
+```bash
+blaireaux-furtif@vbox:~$ sudo journalctl -xe -u ssh
+~
+~
+Nov 13 08:29:32 vbox systemd[1]: Starting ssh.service - OpenBSD Secure Shell server...
+░░ Subject: A start job for unit ssh.service has begun execution
+░░ Defined-By: systemd
+░░ Support: https://www.debian.org/support
+░░
+░░ A start job for unit ssh.service has begun execution.
+░░
+░░ The job identifier is 141.
+Nov 13 08:29:32 vbox sshd[615]: Server listening on 0.0.0.0 port 22.
+Nov 13 08:29:32 vbox sshd[615]: Server listening on :: port 22.
+Nov 13 08:29:32 vbox systemd[1]: Started ssh.service - OpenBSD Secure Shell server.
+░░ Subject: A start job for unit ssh.service has finished successfully
+░░ Defined-By: systemd
+░░ Support: https://www.debian.org/support
+░░
+░░ A start job for unit ssh.service has finished successfully.
+░░
+░░ The job identifier is 141.
+```
+
+
+
+## 3. Modification du service
+
+
+
+### A. Configuration du service SSH
+
+
+🌞 **Identifier le fichier de configuration du serveur SSH**
+```bash
+blaireaux-furtif@vbox:~$ ls -l /etc/ssh | grep config
+-rw-r--r-- 1 root root   1649 Oct 27 14:58 ssh_config
+drwxr-xr-x 2 root root   4096 Nov 20 10:29 ssh_config.d
+-rw-r--r-- 1 root root   3223 Nov 20 10:30 sshd_config
+drwxr-xr-x 2 root root   4096 Dec 21  2023 sshd_config.d
+```
+🌞 **Modifier le fichier de conf**
+
+
+
+🌞 **Redémarrer le service**
+
+
+
+🌞 **Effectuer une connexion SSH sur le nouveau port**
+
+
+### B. Le service en lui-même
+
+
+🌞 **Trouver le fichier `ssh.service`**
+```bash
+blaireaux-furtif@vbox:~$ sudo find / -name "ssh.service"
+[sudo] password for blaireaux-furtif:
+/var/lib/systemd/deb-systemd-helper-enabled/multi-user.target.wants/ssh.service
+/usr/lib/systemd/system/ssh.service
+/usr/share/doc/avahi-daemon/examples/ssh.service
+/sys/fs/cgroup/system.slice/ssh.service
+/etc/systemd/system/multi-user.target.wants/ssh.service
+```
+🌞 **Déterminer quel est le programme lancé**
+
+
+
+## 4. Créez votre propre service
+
+
+
+
+🌞 **Déterminer le dossier qui contient la commande `python3`**
+
+```bash
+blaireaux-furtif@vbox:~$ which python3
+/usr/bin/python3
+```
+
+🌞 **Créez un fichier `/etc/systemd/system/meow_web.service`**
+
+```bash
+blaireaux-furtif@vbox:/etc/systemd/system$ sudo touch meow_web.service
+blaireaux-furtif@vbox:/etc/systemd/system$ sudo nano meow_web.service
+```
+
+🌞 **Indiquez à l'OS que vous avez modifié les *services***
+```bash
+blaireaux-furtif@vbox:/etc/systemd/system$ sudo systemctl daemon-reload
+```
+
+🌞 **Démarrez votre service**
+
+```bash
+blaireaux-furtif@vbox:/etc/systemd/system$ sudo systemctl start meow_web
+```
+
+🌞 **Assurez-vous que le service `meow_web` est actif**
+
+```bash
+blaireaux-furtif@vbox:/etc/systemd/system$ systemctl status meow_web.service
+× meow_web.service - Super serveur web MEOW
+     Loaded: loaded (/etc/systemd/system/meow_web.service; disabled; preset: disabled)
+     Active: failed (Result: exit-code) since Thu 2024-11-21 09:18:47 CET; 3min 24s ago
+   Duration: 14ms
+ Invocation: 7b1a820408484f288f246d1ea217f358
+    Process: 980 ExecStart=<CCHEMIN_VERS_PYTHON3> -m http.server 8888 (code=exited, status=203/EXEC)
+   Main PID: 980 (code=exited, status=203/EXEC)
+        CPU: 6ms
+```
+
+
+🌞 **Déterminer le PID du *processus* Python en cours d'exécution**
+
+```bash
+blaireaux-furtif@vbox:/etc/systemd/system$ ps -ef | grep http.server
+blairea+     989     877  0 09:22 pts/2    00:00:00 grep http.server
+```
+
+🌞 **Prouvez que le *programme* écoute derrière le port 8888**
+
+
+🌞 **Faire en sote que le *service* se lance automatiquement au démarrage de la machine**
+```bash
+blaireaux-furtif@vbox:/etc/systemd/system$ sudo systemctl enable meow_web.service
+Created symlink '/etc/systemd/system/multi-user.target.wants/meow_web.service' → '/etc/systemd/system/meow_web.service'.
+```
